@@ -227,7 +227,10 @@ module.exports = function () {
 
   that.update = function () {
     debug('querying ssdp')
-    if (ssdp) ssdp.search('urn:schemas-upnp-org:device:MediaRenderer:1')
+    if (ssdp) {
+		ssdp.search('urn:schemas-upnp-org:device:MediaRenderer:1');
+		setTimeout(function() {},5000);
+	}
   }
 
   that.destroy = function () {
