@@ -1,4 +1,8 @@
-# dlnacasts
+# dlnacasts2
+
+dlnacasts2 is a fork of grunjol's now abandoned dlnacasts. This version includes minor improvements, 
+including the addition of setTimeout() to fix situations where a search would 
+conclude before clients had an opportunity to respond.
 
 Query your local network for DLNA media renderers and have them play media
 
