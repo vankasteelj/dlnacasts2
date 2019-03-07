@@ -9,13 +9,13 @@ Query your local network for DLNA media renderers and have them play media
 API (and code) based on mafintosh/chromecasts for DLNA
 
 ```
-npm install dlnacasts
+npm install dlnacasts2
 ```
 
 ## Usage
 
 ``` js
-var dlnacasts = require('dlnacasts')()
+var dlnacasts = require('dlnacasts2')()
 
 dlnacasts.on('update', function (player) {
   console.log('all players: ', dlnacasts.players)
