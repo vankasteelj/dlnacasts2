@@ -202,7 +202,7 @@ module.exports = function () {
           }
         }
         if (opts.dlnaFeatures) {
-          media.metadata.dlnaFeatures = opts.dlnaFeatures;
+          media.dlnaFeatures = opts.dlnaFeatures;
         }
 
         var callback = cb
