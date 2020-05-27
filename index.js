@@ -5,6 +5,7 @@ var get = require('simple-get')
 var mime = require('mime')
 var parallel = require('run-parallel')
 var parseString = require('xml2js').parseString
+var et = require('elementtree')
 
 // region monkey patching media renderer
 MediaRenderer.prototype.load = function(url, options, callback) {
