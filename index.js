@@ -196,10 +196,12 @@ module.exports = function () {
           contentType: opts.type || mime.lookup(url, 'video/mp4'),
           metadata: opts.metadata || {
             title: opts.title || '',
-            dlnaFeatures: "DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000",
             type: 'video', // can be 'video', 'audio' or 'image'
             subtitlesUrl: player.subtitles && player.subtitles.length ? player.subtitles[0] : null
           }
+        }
+        if (opts.dlnaFeatures) {
+          media.metadata.dlnaFeatures = opts.dlnaFeatures;
         }
 
         var callback = cb
