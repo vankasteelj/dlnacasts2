@@ -46,6 +46,7 @@ Make the player play a url. Options include:
 {
   title: 'My movie',
   type: 'video/mp4',
+  dlnaFeatures: "DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000", // this enables seeking in some dlna devices
   seek: seconds, // start by seeking to this offset
   subtitles: ['http://example.com/sub.vtt'], // subtitle track 1,
   autoSubtitles: true // enable first track if you provide subs
