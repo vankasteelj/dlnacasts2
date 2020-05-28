@@ -85,6 +85,9 @@ module.exports = function () {
             subtitlesUrl: player.subtitles && player.subtitles.length ? player.subtitles[0] : null
           }
         }
+        if (opts.dlnaFeatures) {
+          media.dlnaFeatures = opts.dlnaFeatures;
+        }
 
         var callback = cb
         if (opts.seek) {
