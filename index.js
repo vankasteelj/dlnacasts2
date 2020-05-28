@@ -6,7 +6,6 @@ var mime = require('mime')
 var parallel = require('run-parallel')
 var parseString = require('xml2js').parseString
 
-
 var SSDP
 try {
   SSDP = require('node-ssdp').Client
