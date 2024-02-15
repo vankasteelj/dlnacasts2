@@ -123,7 +123,7 @@ module.exports = function () {
             InstanceID: player.client.instanceId
           }
           player.client.callAction('AVTransport', 'GetPositionInfo', params, function (err, res) {
-            if (err) return
+            if (err) return acb()
             var position = parseTime(res.AbsTime) | parseTime(res.RelTime)
             acb(null, position)
           })
@@ -146,7 +146,7 @@ module.exports = function () {
         Channel: 'Master'
       }
       player.client.callAction('RenderingControl', 'GetVolume', params, function (err, res) {
-        if (err) return
+        if (err) return cb()
         var volume = res.CurrentVolume ? parseInt(res.CurrentVolume) : 0
         cb(null, volume)
       })
