@@ -67,6 +67,19 @@ module.exports = function () {
     player._status = {}
     player.MAX_VOLUME = 100
 
+    player.connect = connect
+    player.close = function(cb) {
+      if(player.client) {
+        for(e of ["error", "status", "loading", "close"]) {
+          player.client.removeAllListeners(e)
+        }
+        player.client = undefined
+      }
+      if(cb) {
+        cb()
+      }
+    }
+
     player.play = function (url, opts, cb) {
       if (typeof opts === 'function') return player.play(url, null, opts)
       if (!opts) opts = {}
