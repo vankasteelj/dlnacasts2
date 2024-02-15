@@ -91,7 +91,10 @@ module.exports = function () {
 
         var callback = cb
         if (opts.seek) {
-          callback = function () {
+          callback = function(err) {
+            if(err) {
+              return cb(err)
+            }
             player.seek(opts.seek, cb)
           }
         }
