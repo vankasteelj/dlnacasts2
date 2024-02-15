@@ -38,8 +38,8 @@ module.exports = function () {
       })
 
       client.on('status', function (status) {
-        if (status.TransportState === 'PLAYING') player._status.playerState = 'PLAYING'
         if (status.TransportState === 'PAUSED_PLAYBACK') player._status.playerState = 'PAUSED'
+        else if(status.TransportState) player._status.playerState = status.TransportState
         player.emit('status', player._status)
       })
 
