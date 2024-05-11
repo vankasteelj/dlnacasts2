@@ -13,6 +13,7 @@ try {
   SSDP = null
 }
 
+var SERVICE_TYPE = 'urn:schemas-upnp-org:device:MediaRenderer:1';
 var thunky = require('thunky')
 
 var noop = function () {}
@@ -212,6 +213,7 @@ module.exports = function () {
   if (ssdp) {
     ssdp.on('response', function (headers, statusCode, info) {
       if (!headers.LOCATION) return
+      if (headers.ST !== SERVICE_TYPE) return
 
       get.concat(headers.LOCATION, function (err, res, body) {
         if (err) return
@@ -247,7 +249,7 @@ module.exports = function () {
   that.update = function () {
     debug('querying ssdp')
     if (ssdp) {
-		ssdp.search('urn:schemas-upnp-org:device:MediaRenderer:1');
+		ssdp.search(SERVICE_TYPE);
 		setTimeout(function() {},5000);
 	}
   }
