@@ -236,7 +236,21 @@ module.exports = function () {
 	}
   }
 
+  that.on('removeListener', function () {
+    if (ssdp && that.listenerCount('update') === 0) {
+      ssdp.stop()
+    }
+  })
+
   that.destroy = function () {
+    debug('destroying ssdp...')
+    if (ssdp) {
+      ssdp.stop()
+    }
+  }
+
+  that.close = function () {
+    that.removeAllListeners('update')
   }
 
   that.update()
