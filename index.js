@@ -1,7 +1,6 @@
 var MediaRenderer = require('upnp-mediarenderer-client')
 var events = require('events')
 var get = require('simple-get')
-var mime = require('mime')
 var parallel = require('run-parallel')
 var parseString = require('xml2js').parseString
 
