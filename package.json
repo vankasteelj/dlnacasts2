@@ -24,7 +24,7 @@
     "node-ssdp": "^2.7.1",
     "run-parallel": "^1.2.0",
     "simple-get": "^4.0.1",
-    "thunky": "^0.1.0",
+    "thunky": "^1.1.0",
     "upnp-mediarenderer-client": "^1.4.0",
     "xml2js": "^0.6.2"
   }
