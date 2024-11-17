@@ -98,7 +98,7 @@ module.exports = function () {
           }
         }
         if (opts.dlnaFeatures) {
-          media.dlnaFeatures = opts.dlnaFeatures; // for LG WebOS 'DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000' seems to be required
+          media.dlnaFeatures = opts.dlnaFeatures; // for LG WebOS 'DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000' allows seeking
         }
 
         var callback = cb
@@ -148,7 +148,7 @@ module.exports = function () {
         }
       },
       function (err, results) {
-        console.debug('dlnacasts2 player.status results: %o', results)
+        console.debug('dlnacasts player.status results: %o', results)
         player._status.currentTime = results.currentTime
         player._status.volume = {level: results.volume / (player.MAX_VOLUME)}
         return cb(err, player._status)
@@ -220,7 +220,7 @@ module.exports = function () {
             if (err) return
             if (!service.device) return
 
-            console.debug('dlnacasts2 ssdp device: %j', service.device)
+            console.debug('dlnacasts ssdp device: %j', service.device)
 
             var name = service.device.friendlyName
 
@@ -245,7 +245,7 @@ module.exports = function () {
   }
 
   that.update = function () {
-    console.debug('dlnacasts2.update: querying ssdp')
+    console.debug('dlnacasts.update: querying ssdp')
     if (ssdp) {
 		ssdp.search(SERVICE_TYPE);
 		setTimeout(function() {},5000);
@@ -259,7 +259,7 @@ module.exports = function () {
   })
 
   that.destroy = function () {
-    console.debug('dlnacasts2.destroy: destroying ssdp...')
+    console.debug('dlnacasts.destroy: destroying ssdp...')
     if (ssdp) {
       ssdp.stop()
     }

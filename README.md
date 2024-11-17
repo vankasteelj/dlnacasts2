@@ -1,21 +1,17 @@
-# dlnacasts2
-
-dlnacasts2 is a fork of grunjol's now abandoned dlnacasts. This version includes minor improvements, 
-including the addition of setTimeout() to fix situations where a search would 
-conclude before clients had an opportunity to respond.
+# dlnacasts3
 
 Query your local network for DLNA media renderers and have them play media
 
-API (and code) based on mafintosh/chromecasts for DLNA
+Note: dlnacasts3 is a fork of rslavin abandonned dlnacasts2 (itself based on grunjol's dlnacasts). It has been updated for security reasons, including some hotfixes from contributors (see commit list). API (and code) based on mafintosh/chromecasts for DLNA. 
 
 ```
-npm install dlnacasts2
+npm install dlnacasts3
 ```
 
 ## Usage
 
 ``` js
-var dlnacasts = require('dlnacasts2')()
+const dlnacasts = require('dlnacasts3')()
 
 dlnacasts.on('update', function (player) {
   console.log('all players: ', dlnacasts.players)
@@ -25,7 +21,7 @@ dlnacasts.on('update', function (player) {
 
 ## API
 
-#### `var list = dlnacasts()`
+#### `const list = dlnacasts()`
 
 Creates a dlna list.
 When creating a new list it will call `list.update()` once.
@@ -46,7 +42,7 @@ Make the player play a url. Options include:
 {
   title: 'My movie',
   type: 'video/mp4',
-  dlnaFeatures: "DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000", // this enables seeking in some dlna devices
+  dlnaFeatures: 'DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000', // this enables seeking in some dlna devices like LG WebOS
   seek: seconds, // start by seeking to this offset
   subtitles: ['http://example.com/sub.vtt'], // subtitle track 1,
   autoSubtitles: true // enable first track if you provide subs

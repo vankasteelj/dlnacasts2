@@ -1,11 +1,11 @@
 {
-  "name": "dlnacasts2",
-  "version": "0.2.0",
+  "name": "dlnacasts3",
+  "version": "0.3.0",
   "description": "Query your local network for DLNA enabled renderers and have them play media",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rslavin/dlnacasts2.git"
+    "url": "git+https://github.com/vankasteelj/dlnacasts3.git"
   },
   "keywords": [
     "dlna",
@@ -13,12 +13,12 @@
     "cast",
     "client"
   ],
-  "author": "rslavin",
+  "author": "vankasteelj",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rslavin/dlnacasts2/issues"
+    "url": "https://github.com/vankasteelj/dlnacasts3/issues"
   },
-  "homepage": "https://github.com/rslavin/dlnacasts2#readme",
+  "homepage": "https://github.com/vankasteelj/dlnacasts3#readme",
   "dependencies": {
     "node-ssdp": "^4.0.1",
     "run-parallel": "^1.2.0",
