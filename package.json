@@ -26,6 +26,6 @@
     "simple-get": "^2.1.0",
     "thunky": "^0.1.0",
     "upnp-mediarenderer-client": "^1.4.0",
-    "xml2js": "^0.5.0"
+    "xml2js": "^0.6.2"
   }
 }
