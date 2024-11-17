@@ -1,5 +1,4 @@
 var MediaRenderer = require('upnp-mediarenderer-client')
-var debug = require('debug')('dlnacasts')
 var events = require('events')
 var get = require('simple-get')
 var mime = require('mime')
@@ -150,7 +149,7 @@ module.exports = function () {
         }
       },
       function (err, results) {
-        debug('%o', results)
+        console.debug('dlnacasts2 player.status results: %o', results)
         player._status.currentTime = results.currentTime
         player._status.volume = {level: results.volume / (player.MAX_VOLUME)}
         return cb(err, player._status)
@@ -222,7 +221,7 @@ module.exports = function () {
             if (err) return
             if (!service.device) return
 
-            debug('device %j', service.device)
+            console.debug('dlnacasts2 ssdp device: %j', service.device)
 
             var name = service.device.friendlyName
 
@@ -247,7 +246,7 @@ module.exports = function () {
   }
 
   that.update = function () {
-    debug('querying ssdp')
+    console.debug('dlnacasts2.update: querying ssdp')
     if (ssdp) {
 		ssdp.search(SERVICE_TYPE);
 		setTimeout(function() {},5000);
@@ -261,7 +260,7 @@ module.exports = function () {
   })
 
   that.destroy = function () {
-    debug('destroying ssdp...')
+    console.debug('dlnacasts2.destroy: destroying ssdp...')
     if (ssdp) {
       ssdp.stop()
     }
