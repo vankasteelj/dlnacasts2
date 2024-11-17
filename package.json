@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/rslavin/dlnacasts2#readme",
   "dependencies": {
-    "node-ssdp": "^2.7.1",
+    "node-ssdp": "^4.0.1",
     "run-parallel": "^1.2.0",
     "simple-get": "^4.0.1",
     "thunky": "^1.1.0",
