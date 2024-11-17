@@ -71,11 +71,10 @@ module.exports = () => {
       if(cb) cb()
     }
 
-    player.play = (url, opts, cb) => {
+    player.play = (url, opts, cb = noop) => {
       if (typeof opts === 'function') return player.play(url, null, opts)
       if (!opts) opts = {}
       if (!url) return player.resume(cb)
-      if (!cb) cb = noop
       player.subtitles = opts.subtitles
       connect((err, p) => {
         if (err) return cb(err)
@@ -105,23 +104,19 @@ module.exports = () => {
       })
     }
 
-    player.resume = (cb) => {
-      if (!cb) cb = noop
+    player.resume = (cb = noop) => {
       player.client.play(cb)
     }
 
-    player.pause = (cb) => {
-      if (!cb) cb = noop
+    player.pause = (cb = noop) => {
       player.client.pause(cb)
     }
 
-    player.stop = (cb) => {
-      if (!cb) cb = noop
+    player.stop = (cb = noop) => {
       player.client.stop(cb)
     }
 
-    player.status = (cb) => {
-      if (!cb) cb = noop
+    player.status = (cb = noop) => {
       parallel({
         currentTime: (acb) => {
           player.client.callAction('AVTransport', 'GetPositionInfo', {
@@ -153,8 +148,7 @@ module.exports = () => {
       })
     }
 
-    player.volume = (vol, cb) => {
-      if (!cb) cb = noop
+    player.volume = (vol, cb = noop) => {
       player.client.callAction('RenderingControl', 'SetVolume', {
         InstanceID: player.client.instanceId,
         Channel: 'Master',
@@ -162,18 +156,15 @@ module.exports = () => {
       }, cb)
     }
 
-    player.request = (target, action, data, cb) => {
-      if (!cb) cb = noop
+    player.request = (target, action, data, cb = noop) => {
       player.client.callAction(target, action, data, cb)
     }
 
-    player.seek = (time, cb) => {
-      if (!cb) cb = noop
+    player.seek = (time, cb = noop) => {
       player.client.seek(time, cb)
     }
 
-    player._detectVolume = (cb) => {
-      if (!cb) cb = noop
+    player._detectVolume = (cb = noop) => {
       player._volume((err, currentVolume) => {
         if (err) cb(err)
         player.volume(player.MAX_VOLUME, (err) => {
