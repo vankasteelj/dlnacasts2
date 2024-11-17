@@ -99,7 +99,7 @@ module.exports = function () {
           }
         }
         if (opts.dlnaFeatures) {
-          media.dlnaFeatures = opts.dlnaFeatures;
+          media.dlnaFeatures = opts.dlnaFeatures; // for LG WebOS 'DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01100000000000000000000000000000' seems to be required
         }
 
         var callback = cb
