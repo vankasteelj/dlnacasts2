@@ -21,6 +21,7 @@
   "homepage": "https://github.com/vankasteelj/dlnacasts3#readme",
   "dependencies": {
     "node-ssdp": "^4.0.1",
+    "run-parallel": "^1.2.0",
     "simple-get": "^4.0.1",
     "thunky": "^1.1.0",
     "upnp-mediarenderer-client": "^1.4.0",

@@ -1,6 +1,7 @@
 const MediaRenderer = require('upnp-mediarenderer-client')
 const events = require('events')
 const get = require('simple-get')
+const parallel = require('run-parallel')
 const parseString = require('xml2js').parseString
 const SSDP = require('node-ssdp').Client
 
@@ -108,7 +109,10 @@ module.exports = () => {
             const newStatus = res.CurrentTransportState
             if (newStatus !== player._status.playerState) {
               player._status.playerState = newStatus
-              player.emit('status', { playerState: newStatus })
+              player.status((err, status) => {
+                if (err) return
+                player.emit('status', status)
+              })
             }
           })
         }, 1000)
@@ -130,6 +134,28 @@ module.exports = () => {
       player.client.stop(cb)
     }
 
+    player.status = (cb = noop) => {
+      parallel({
+        currentTime: (acb) => {
+          player.client.callAction('AVTransport', 'GetPositionInfo', {
+            InstanceID: player.client.instanceId
+          }, (err, res) => {
+            if (err) return acb()
+            acb(null, parseTime(res.AbsTime) | parseTime(res.RelTime))
+          })
+        },
+        volume: (acb) => {
+          player.getVolume(acb)
+        }
+      },
+      (err, results) => {
+        console.debug('dlnacasts player.status results: %o', results)
+        player._status.currentTime = results.currentTime
+        player._status.volume = {level: results.volume / (player.MAX_VOLUME)}
+        return cb(err, player._status)
+      })
+    }
+
     player.getVolume = (cb) => {
       player.client.callAction('RenderingControl', 'GetVolume', {
         InstanceID: player.client.instanceId,
@@ -144,7 +170,7 @@ module.exports = () => {
       player.client.callAction('RenderingControl', 'SetVolume', {
         InstanceID: player.client.instanceId,
         Channel: 'Master',
-        DesiredVolume: (player.MAX_VOLUME * vol) | 0
+        DesiredVolume: vol
       }, cb)
     }
 
