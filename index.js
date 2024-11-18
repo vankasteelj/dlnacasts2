@@ -22,18 +22,14 @@ module.exports = () => {
     cst.emitted = true
 
     const player = new events.EventEmitter()
+    let getStatus = undefined
 
     const connect = thunky(function reconnect (cb) {
       const client = new MediaRenderer(player.xml)
 
       client.on('error', (err) => {
+        try { clearInterval(getStatus) } catch(e) {}
         player.emit('error', err)
-      })
-
-      client.on('status', (status) => {
-        if (status.TransportState === 'PAUSED_PLAYBACK') player._status.playerState = 'PAUSED'
-        else if(status.TransportState) player._status.playerState = status.TransportState
-        player.emit('status', player._status)
       })
 
       client.on('loading', (err) => {
@@ -41,10 +37,12 @@ module.exports = () => {
       })
 
       client.on('close', () => {
+        try { clearInterval(getStatus) } catch(e) {}
         connect = thunky(reconnect)
       })
 
       player.client = client
+
       cb(null, player.client)
     })
 
@@ -62,6 +60,7 @@ module.exports = () => {
 
     player.connect = connect
     player.close = (cb) => {
+      try { clearInterval(getStatus) } catch(e) {}
       if(player.client) {
         for(e of ["error", "status", "loading", "close"]) {
           player.client.removeAllListeners(e)
@@ -78,6 +77,8 @@ module.exports = () => {
       player.subtitles = opts.subtitles
       connect((err, p) => {
         if (err) return cb(err)
+
+        try { clearInterval(getStatus) } catch(e) {}
 
         const media = {
           autoplay: opts.autoPlay !== false,
@@ -100,6 +101,19 @@ module.exports = () => {
           }
         }
 
+        getStatus = setInterval(() => {
+          player.client.callAction('AVTransport', 'GetTransportInfo', {
+            InstanceID: player.client.instanceId
+          }, (err, res) => {
+            if (err) return
+            const newStatus = res.CurrentTransportState
+            if (newStatus !== player._status.playerState) {
+              player._status.playerState = newStatus
+              player.emit('status', { playerState: newStatus })
+            }
+          })
+        }, 1000)
+
         p.load(url, media, callback)
       })
     }
@@ -113,32 +127,11 @@ module.exports = () => {
     }
 
     player.stop = (cb = noop) => {
+      try { clearInterval(getStatus) } catch(e) {}
       player.client.stop(cb)
     }
 
-    player.status = (cb = noop) => {
-      parallel({
-        currentTime: (acb) => {
-          player.client.callAction('AVTransport', 'GetPositionInfo', {
-            InstanceID: player.client.instanceId
-          }, (err, res) => {
-            if (err) return acb()
-            acb(null, parseTime(res.AbsTime) | parseTime(res.RelTime))
-          })
-        },
-        volume: (acb) => {
-          player._volume(acb)
-        }
-      },
-      (err, results) => {
-        console.debug('dlnacasts player.status results: %o', results)
-        player._status.currentTime = results.currentTime
-        player._status.volume = {level: results.volume / (player.MAX_VOLUME)}
-        return cb(err, player._status)
-      })
-    }
-
-    player._volume = (cb) => {
+    player.getVolume = (cb) => {
       player.client.callAction('RenderingControl', 'GetVolume', {
         InstanceID: player.client.instanceId,
         Channel: 'Master'
@@ -148,7 +141,7 @@ module.exports = () => {
       })
     }
 
-    player.volume = (vol, cb = noop) => {
+    player.setVolume = (vol, cb = noop) => {
       player.client.callAction('RenderingControl', 'SetVolume', {
         InstanceID: player.client.instanceId,
         Channel: 'Master',
@@ -162,22 +155,6 @@ module.exports = () => {
 
     player.seek = (time, cb = noop) => {
       player.client.seek(time, cb)
-    }
-
-    player._detectVolume = (cb = noop) => {
-      player._volume((err, currentVolume) => {
-        if (err) cb(err)
-        player.volume(player.MAX_VOLUME, (err) => {
-          if (err) cb(err)
-          player._volume((err, maxVolume) => {
-            if (err) cb(err)
-            player.MAX_VOLUME = maxVolume
-            player.volume(currentVolume, (err) => {
-              cb(err, maxVolume)
-            })
-          })
-        })
-      })
     }
 
     that.players.push(player)
@@ -196,7 +173,7 @@ module.exports = () => {
             if (err) return
             if (!service.device) return
 
-            console.debug('dlnacasts ssdp device: %j', service.device)
+            console.debug('[DLNACASTS] ssdp device:', service.device)
 
             const name = service.device.friendlyName
 
@@ -221,10 +198,10 @@ module.exports = () => {
   }
 
   that.update = () => {
-    console.debug('dlnacasts.update: querying ssdp')
+    console.debug('[DLNACASTS] querying ssdp')
     if (ssdp) {
       ssdp.search(SERVICE_TYPE)
-      setTimeout(() => {}, 5000)
+      setTimeout(() => {}, 10000)
     }
   }
 
@@ -235,7 +212,7 @@ module.exports = () => {
   })
 
   that.destroy = () => {
-    console.debug('dlnacasts.destroy: destroying ssdp...')
+    console.debug('[DLNACASTS] destroying ssdp...')
     if (ssdp) {
       ssdp.stop()
     }
@@ -244,8 +221,6 @@ module.exports = () => {
   that.close = () => {
     that.removeAllListeners('update')
   }
-
-  that.update()
 
   return that
 }
