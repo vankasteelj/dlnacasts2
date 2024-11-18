@@ -1,6 +1,6 @@
 {
   "name": "dlnacasts3",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Query your local network for DLNA enabled renderers and have them play media",
   "main": "index.js",
   "repository": {
