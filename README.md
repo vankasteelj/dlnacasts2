@@ -4,6 +4,11 @@ Query your local network for DLNA media renderers and have them play media
 
 Note: dlnacasts3 is a fork of rslavin abandonned dlnacasts2 (itself based on grunjol's dlnacasts). It has been updated for security reasons, including some hotfixes from contributors (see commit list). API (and code) based on mafintosh/chromecasts for DLNA. 
 
+## Updating from v0.X.X to 1.x.x
+Breaking changes: 
+- `const list = dlnacasts()` will no longer trigger a `list.update()`
+- `player.on('status', status)` has changed, see below
+
 ```
 npm install dlnacasts3
 ```
@@ -24,7 +29,6 @@ dlnacasts.on('update', function (player) {
 #### `const list = dlnacasts()`
 
 Creates a dlna list.
-When creating a new list it will call `list.update()` once.
 
 #### `list.update()`
 
@@ -69,13 +73,28 @@ Stop the playback
 
 Seek the video
 
-#### `player.status(cb)`
+### `player.getVolume([cb])`
 
-Get a status object of the current played video.
+Get the volume of the renderer
+
+### `player.setVolume(<volume>, [cb])`
+
+Set the volume on the renderer
 
 #### `player.on('status', status)`
 
 Emitted when a status object is received.
+
+`status.playerState` could be one of :
+```js
+[
+  'PLAYING', // player is playing a video (player.pause() to pause)
+  'STOPPED',  // player was quit by user
+  'PAUSED_PLAYBACK', // player was paused (player.play() to continue)
+  'NO_MEDIA_PRESENT', // usually after a 'STOPPED'
+  'TRANSITIONNING' // DLNA renderer is loading something
+]
+```
 
 ## License
 
