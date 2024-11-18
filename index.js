@@ -1,7 +1,6 @@
 const MediaRenderer = require('upnp-mediarenderer-client')
 const events = require('events')
 const get = require('simple-get')
-const parallel = require('run-parallel')
 const parseString = require('xml2js').parseString
 const SSDP = require('node-ssdp').Client
 
