@@ -73,6 +73,10 @@ Stop the playback
 
 Seek the video
 
+### `player.status([cb])`
+
+Get a status of what's playing on the renderer. Similar to `player.on('status', cb)` event but manually triggered
+
 ### `player.getVolume([cb])`
 
 Get the volume of the renderer
@@ -84,6 +88,17 @@ Set the volume on the renderer
 #### `player.on('status', status)`
 
 Emitted when a status object is received.
+
+status Object()
+```js
+{
+  currentTime: 122, // time in seconds (122 = 00:02:02)
+  playerState: "PAUSED_PLAYBACK", // player State: see below
+  volume: {
+    level: 0.1  // 0.1 corresponds to 10 on a scale of 100
+  }
+}
+```
 
 `status.playerState` could be one of :
 ```js
