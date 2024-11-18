@@ -8,6 +8,7 @@ Note: dlnacasts3 is a fork of rslavin abandonned dlnacasts2 (itself based on gru
 Breaking changes: 
 - `const list = dlnacasts()` will no longer trigger a `list.update()`
 - `player.on('status', status)` has changed, see below
+- volume API changed, it is now `player.getVolume` and `player.setVolume`
 
 ## Usage
 ```
