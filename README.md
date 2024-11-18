@@ -4,17 +4,16 @@ Query your local network for DLNA media renderers and have them play media
 
 Note: dlnacasts3 is a fork of rslavin abandonned dlnacasts2 (itself based on grunjol's dlnacasts). It has been updated for security reasons, including some hotfixes from contributors (see commit list). API (and code) based on mafintosh/chromecasts for DLNA. 
 
-## Updating from v0.X.X to 1.x.x
+## Updating from 0.x.x to 1.x.x
 Breaking changes: 
 - `const list = dlnacasts()` will no longer trigger a `list.update()`
 - `player.on('status', status)` has changed, see below
 
+## Usage
 ```
 npm install dlnacasts3
 ```
-
-## Usage
-
+then in your JS files: 
 ``` js
 const dlnacasts = require('dlnacasts3')()
 
